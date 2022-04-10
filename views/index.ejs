@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <script src="/main.js"></script>
+
     <h1>May Node and Express be with you.</h1>
 
     <form action="/quotes" method="POST">
@@ -17,7 +17,7 @@
         <button type="submit">Submit</button>
     </form>
     <h2> Quotes </h2>
-    
+
     <ul class="quotes">
         <!-- Loop through quotes -->
         <% for(var i=0; i < quotes.length; i++) {%>
@@ -42,7 +42,19 @@
         <button id="update-button">Replace Yoda's quote</button>
     </div>
 
-    
+    <div>
+        <h2>Remove Darth Vadar!</h2>
+        <p>
+            Delete one Darth Vadar's quote. Does nothing if there are no more Darth
+            Vadar's quote
+        </p>
+        <button id="delete-button">Delete Darth Vadar's quote</button>
+        <div id="message"></div>
+    </div>
+
+    <script src="/main.js"></script>
+
+
 </body>
 
 </html>

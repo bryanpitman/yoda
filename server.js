@@ -3,6 +3,8 @@ const bodyParser = require('body-parser')
 const MongoClient = require('mongodb').MongoClient
 const app = express();
 app.set('view engine', 'ejs')
+app.use(express.static('public'))
+app.use(bodyParser.json())
 
 const link = 'mongodb+srv://Bryan:babyoda@cluster0.zu8gn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 
@@ -19,7 +21,7 @@ MongoClient.connect(link, { useUnifiedTopology: true })
                     res.render('index.ejs', { quotes: results })
                 })
                 .catch(error => console.error(error))
-            
+
             //res.sendFile("/Users/bryanpitman/Desktop/yoda" + '/index.html')
         })
 
@@ -33,6 +35,42 @@ MongoClient.connect(link, { useUnifiedTopology: true })
                 .catch(error => console.error(error))
 
         })
+
+        app.put('/quotes', (req, res) => {
+            quotesCollection.findOneAndUpdate(
+                { name: 'Yoda' },
+                {
+                    $set: {
+                        name: req.body.name,
+                        quote: req.body.quote
+                    }
+                },
+                {
+                    upsert: true
+                }
+            )
+                .then(result => {
+                    console.log(result)
+                    res.json('Success')
+
+                })
+                .catch(error => console.error(error))
+        })
+        app.delete('/quotes', (req, res) => {
+            quotesCollection.deleteOne(
+                { name: req.body.name },
+                
+            )
+
+                .then(result => {
+                    if (result.deletedCount === 0) {
+                        return res.json('No quote to delete')
+                    }
+                    res.json(`Deleted Darth Vadar's quote`)
+                })
+                .catch(error => console.error(error))
+        })
+
     })
     .catch(error => console.error(error))
 
